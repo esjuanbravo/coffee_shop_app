@@ -3,10 +3,157 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mi Página Principal Django</title>
+    <title>Coffee Shop</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+      .menu-movil {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .menu-abierto .menu-movil {
+        max-height: 100vh;
+        opacity: 1;
+      }
+
+      .icono-cafe span {
+        transition: all 0.3s ease;
+      }
+      .menu-abierto .barra-superior {
+        transform: translateY(8px) rotate(45deg);
+      }
+      .menu-abierto .barra-medio {
+        opacity: 0;
+      }
+      .menu-abierto .barra-inferior {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+    </style>
   </head>
-  <body>
-    <h1>¡Hola desde mi primera página Django!</h1>
-    <p>¡Esto es mucho mejor que la página de inicio genérica!</p>
+  <body class="overflow-x-hidden">
+    <header class="bg-amber-50 shadow-md sticky top-0 z-50">
+      <nav class="container mx-auto px-4">
+        <div class="flex justify-between items-center h-20">
+          <!-- Logo y nombre a la izquierda -->
+          <div class="flex items-center gap-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-coffee-icon lucide-coffee"
+            >
+              <path d="M10 2v2" />
+              <path d="M14 2v2" />
+              <path
+                d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"
+              />
+              <path d="M6 2v2" />
+            </svg>
+            <span class="text-3xl font-bold text-amber-900 md:block"
+              >Cofee Shop</span
+            >
+          </div>
+
+          <!-- Botones derecha -->
+          <div class="flex items-center gap-4">
+            <!-- Botones desktop -->
+            <div class="hidden md:flex gap-6">
+              <button
+                class="text-amber-900 hover:text-amber-600 cursor-pointer text-lg font-medium transition-colors"
+              >
+                Menú
+              </button>
+              <button
+                class="text-amber-900 hover:text-amber-600 cursor-pointer text-lg font-medium transition-colors"
+              >
+                Pedido
+              </button>
+              <button
+                class="text-white hover:bg-amber-800 cursor-pointer text-lg font-medium transition-colors bg-amber-700 px-4 py-2 rounded-lg"
+              >
+                Login
+              </button>
+            </div>
+
+            <!-- Botón móvil -->
+            <button
+              id="toggleMenu"
+              class="md:hidden p-3 space-y-2 cursor-pointer hover:bg-amber-100 rounded-lg transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-menu-icon lucide-menu w-8 h-8"
+              >
+                <path d="M4 12h16" />
+                <path d="M4 18h16" />
+                <path d="M4 6h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Menú Móvil -->
+        <div class="menu-movil md:hidden pb-6 space-y-4">
+          <button
+            class="w-full text-left px-4 py-3 text-amber-900 text-lg hover:bg-amber-100 rounded-lg transition-colors"
+          >
+            Menú
+          </button>
+          <button
+            class="w-full text-left px-4 py-3 text-amber-900 text-lg hover:bg-amber-100 rounded-lg transition-colors"
+          >
+            Pedido
+          </button>
+          <button
+            class="w-full text-left px-4 py-3 text-amber-900 text-lg hover:bg-amber-100 rounded-lg transition-colors"
+          >
+            Login
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="min-h-screen bg-amber-50">
+      <section class="container mx-auto px-4 py-20">
+        <div class="max-w-4xl mx-auto text-center">
+          <h1 class="text-5xl md:text-6xl font-bold text-amber-900 mb-6">
+            Café de Especialidad
+          </h1>
+          <p class="text-xl text-amber-800 mb-8">
+            Experimenta la auténtica tradición cafetalera con nuestros granos
+            premium tostados prefecto para ti
+          </p>
+          <button
+            class="bg-amber-700 text-white px-8 py-3 rounded-lg hover:bg-amber-800 transition-colors text-lg"
+          >
+            Ver Nuestra Carta
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const toggleMenu = document.getElementById("toggleMenu");
+      toggleMenu.addEventListener("click", () => {
+        document.body.classList.toggle("menu-abierto");
+      });
+    </script>
   </body>
 </html>
