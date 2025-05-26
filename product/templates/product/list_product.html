@@ -1,0 +1,84 @@
+{% extends "index.html" %} {% block content %}
+
+<div class="container mx-auto px-4 py-8 max-w-7xl bg-amber-50 min-h-screen">
+  <h1 class="text-4xl font-bold text-center text-amber-900 mb-8">
+    Nuestra Carta
+  </h1>
+
+  <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for product in products %}
+    <li
+      class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 ease-out hover:-translate-y-1"
+    >
+      <div class="p-6 space-y-4">
+        <!-- Encabezado con categoría -->
+        <div class="flex justify-between items-start">
+          <h2 class="text-xl font-semibold text-amber-900">
+            {{ product.name }}
+          </h2>
+          {% if product.category %}
+          <span
+            class="bg-amber-100 text-amber-800 text-sm font-medium px-3 py-1 rounded-full"
+          >
+            {{ product.category.name }}
+          </span>
+          {% endif %}
+        </div>
+
+        <!-- Imagen -->
+        {% if product.imagen %}
+        <div class="relative h-48 w-full rounded-lg overflow-hidden">
+          <img
+            src="{{ product.imagen.url }}"
+            alt="Imagen de {{ product.name }}"
+            class="w-full h-full object-cover transform transition duration-300 hover:scale-105"
+          />
+        </div>
+        {% else %}
+        <div
+          class="bg-amber-100 h-48 w-full rounded-lg flex items-center justify-center"
+        >
+          <p class="text-amber-600 text-sm">Imagen no disponible</p>
+        </div>
+        {% endif %}
+
+        <!-- Detalles del producto -->
+        <div class="space-y-2">
+          <p class="text-2xl font-bold text-amber-700">
+            ${{ product.price|floatformat:2 }}
+          </p>
+
+          <p class="text-amber-800 text-sm leading-relaxed">
+            {{ product.description|truncatechars:100 }}
+          </p>
+        </div>
+
+        <!-- Disponibilidad -->
+        <div class="flex justify-between items-center">
+          {% if product.available %}
+          <span
+            class="bg-green-100 text-green-700 text-sm font-medium px-3 py-1 rounded-full"
+          >
+            Disponible
+          </span>
+          {% else %}
+          <span
+            class="bg-rose-100 text-rose-700 text-sm font-medium px-3 py-1 rounded-full"
+          >
+            Agotado
+          </span>
+          {% endif %}
+        </div>
+      </div>
+    </li>
+    {% empty %}
+    <li class="col-span-full text-center py-12">
+      <div class="text-amber-600 text-xl">
+        Nuestro menú se está preparando...
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+{% endblock %}
