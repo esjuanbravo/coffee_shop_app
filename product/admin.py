@@ -18,3 +18,5 @@ class ProductAdmin(admin.ModelAdmin):
     list_display=['id', 'name','category', 'price', 'available']
     search_fields= ['name']
     ordering=['id']
+    
+ 

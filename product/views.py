@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views import generic
 from django.shortcuts import redirect
 from .forms import ProductsForms
-from .models import Products
+from .models import Products, Category
 
 # class ProductsCreateView(generic.TemplateView):
 #     template_name = 'product/all_product.html'
@@ -27,10 +27,22 @@ from .models import Products
 #             'product_form': product_form,
 #         })
     
+# class ProductListView(generic.ListView):
+#     model = Products
+#     template_name='product/list_product.html'
+#     context_object_name = 'products' 
+    
+#     def get_queryset(self):
+#         # Ordenamos por categoría y luego por nombre
+#         return Products.objects.select_related('category').order_by('category__name', 'name')
+    
 class ProductListView(generic.ListView):
-    model = Products
-    template_name='product/list_product.html'
-    context_object_name = 'products' 
+    model = Category  # Cambiamos el modelo a Category
+    template_name = 'product/list_product.html'
+    context_object_name = 'categories'  # Cambiamos el contexto a categorías
     
     def get_queryset(self):
-        return Products.objects.all().order_by('name')
+        # Obtenemos categorías con sus productos relacionados y filtramos solo las con productos
+        return Category.objects.prefetch_related(
+            'products_set'  # Nombre de la relación inversa (products_set por defecto)
+        ).filter(products__isnull=False).distinct().order_by('name')

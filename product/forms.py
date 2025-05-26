@@ -80,12 +80,12 @@ class ProductsForms(forms.ModelForm):
         if imagen:
             # Validación de tamaño (exclusiva del formulario)
             if imagen.size > 5 * 1024 * 1024:  # 5MB
-                raise forms.ValidationError("La imagen es demasiado grande (máximo 2MB)")
+                raise forms.ValidationError("La imagen es demasiado grande (máximo 5MB)")
             
         return imagen
     
     def clean_name(self):
-        name = self.clean_imagen.get('name')
+        name = self.cleaned_data.get('name')
         if name:
             name = name.title()
         
@@ -98,3 +98,5 @@ class ProductsForms(forms.ModelForm):
             description = description.strip()
             if not description.endswith('.'):
                 description += '.'
+                
+        return description
