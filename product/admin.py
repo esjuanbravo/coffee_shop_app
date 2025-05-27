@@ -6,6 +6,7 @@ from .models import Category, Products
 
 # Register your models here.
 
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['id','name']
@@ -15,8 +16,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Products)
 class ProductAdmin(admin.ModelAdmin):
-    list_display=['id', 'name','category', 'price', 'available']
-    search_fields= ['name']
+    list_display=['id', 'name','category', 'price','create', 'available']
+    search_fields= ['name', 'create']
     ordering=['id']
-    
  

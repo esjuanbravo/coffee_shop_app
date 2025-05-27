@@ -29,6 +29,7 @@ class Products(models.Model):
     )
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name='categoria')
     available = models.BooleanField(default=True, verbose_name='Disponibilidad')
+    create = models.DateTimeField(auto_created=True, verbose_name='Fecha de creación', null=True)
     
     class Meta:
         verbose_name = 'Producto' 
