@@ -130,3 +130,5 @@ MEDIA_ROOT = BASE_DIR / 'media'
 STATICFILES_DIRS = [
     BASE_DIR / "product/static",  # Archivos estáticos de la app
 ]
+
+LOGIN_REDIRECT_URL = 'home'

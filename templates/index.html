@@ -57,30 +57,34 @@
               />
               <path d="M6 2v2" />
             </svg>
-            <span class="text-3xl font-bold text-amber-900 md:block"
-              >Cofee Shop</span
+            <a
+              class="text-3xl font-bold text-amber-900 md:block"
+              href="{% url 'home' %}"
+              >Cofee Shop</a
             >
           </div>
 
-          <!-- Botones derecha -->
-          <div class="flex items-center gap-4">
+          <!-- Botones derecha  -->
+          <div class="flex items-center">
             <!-- Botones desktop -->
-            <div class="hidden md:flex gap-6">
-              <button
+            <div class="hidden md:flex items-center gap-6">
+              <!-- Eliminado h-screen y justify-center -->
+              <a
                 class="text-amber-900 hover:text-amber-600 cursor-pointer text-lg font-medium transition-colors"
               >
                 Menú
-              </button>
-              <button
+              </a>
+              <a
                 class="text-amber-900 hover:text-amber-600 cursor-pointer text-lg font-medium transition-colors"
               >
                 Pedido
-              </button>
-              <button
+              </a>
+              <a
+                href="{% url 'login' %}"
                 class="text-white hover:bg-amber-800 cursor-pointer text-lg font-medium transition-colors bg-amber-700 px-4 py-2 rounded-lg"
               >
                 Login
-              </button>
+              </a>
             </div>
 
             <!-- Botón móvil -->
@@ -110,27 +114,30 @@
 
         <!-- Menú Móvil -->
         <div class="menu-movil md:hidden pb-6 space-y-4">
-          <button
+          <a
             class="w-full text-left px-4 py-3 text-amber-900 text-lg hover:bg-amber-100 rounded-lg transition-colors"
           >
             Menú
-          </button>
-          <button
+          </a>
+          <a
             class="w-full text-left px-4 py-3 text-amber-900 text-lg hover:bg-amber-100 rounded-lg transition-colors"
           >
             Pedido
-          </button>
-          <button
+          </a>
+          <a
+            href="{% url 'login' %}"
             class="w-full text-left px-4 py-3 text-amber-900 text-lg hover:bg-amber-100 rounded-lg transition-colors"
           >
             Login
-          </button>
+          </a>
         </div>
       </nav>
     </header>
 
     <!-- Contenido principal -->
     <main class="min-h-screen bg-amber-50">
+      {% if request.resolver_match.url_name != 'login' %}
+
       <section class="container mx-auto px-4 py-20">
         <div class="max-w-4xl mx-auto text-center">
           <h1 class="text-5xl md:text-6xl font-bold text-amber-900 mb-6">
@@ -148,7 +155,7 @@
         </div>
       </section>
 
-      {% block content %} {% endblock %}
+      {% endif %} {% block content %} {% endblock %}
     </main>
 
     <script>

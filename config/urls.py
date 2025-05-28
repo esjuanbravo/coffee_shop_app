@@ -24,6 +24,6 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('productos/', include('product.urls')),
-    path('usurios', include('user.urls') ),
+    path('usurios/', include('user.urls') ),
     path('', ProductListView.as_view(), name='home'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
