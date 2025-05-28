@@ -1,5 +1,7 @@
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 from django.contrib.auth.views import LoginView
-from .forms import LoginForm  # Asegúrate de que este path apunta a tu LoginForm
+from .forms import LoginForm
 from django.urls import reverse_lazy
 
 class CustomLoginView(LoginView):
@@ -9,3 +11,7 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         return self.success_url
+
+    def logout_view(request):
+        logout(request)
+        return redirect('home')

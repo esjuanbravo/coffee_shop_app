@@ -4,7 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Coffee Shop</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "coffee-dark": "#3E2723",
+              "coffee-medium": "#5D4037",
+              "coffee-light": "#8D6E63",
+              "coffee-cream": "#D7CCC8",
+              "coffee-accent": "#FF9800",
+            },
+          },
+        },
+      };
+    </script>
     <style>
       .menu-movil {
         max-height: 0;
@@ -30,10 +49,29 @@
       .menu-abierto .barra-inferior {
         transform: translateY(-8px) rotate(-45deg);
       }
+
+      .user-dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content {
+        animation: fadeIn 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
     </style>
   </head>
-  <body class="overflow-x-hidden">
-    <header class="bg-amber-50 shadow-md sticky top-0 z-50">
+  <body class="overflow-x-hidden bg-amber-50">
+    <header class="bg-white shadow-md sticky top-0 z-50">
       <nav class="container mx-auto px-4">
         <div class="flex justify-between items-center h-20">
           <!-- Logo y nombre a la izquierda -->
@@ -48,7 +86,7 @@
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-coffee-icon lucide-coffee"
+              class="lucide lucide-coffee-icon lucide-coffee text-coffee-accent"
             >
               <path d="M10 2v2" />
               <path d="M14 2v2" />
@@ -58,9 +96,33 @@
               <path d="M6 2v2" />
             </svg>
             <a
-              class="text-3xl font-bold text-amber-900 md:block"
+              class="text-3xl font-bold text-coffee-dark md:block"
               href="{% url 'home' %}"
-              >Cofee Shop</a
+              >Coffee Shop</a
+            >
+          </div>
+
+          <!-- Menú central para desktop -->
+          <div class="hidden md:flex space-x-8 mx-auto">
+            <a
+              href="#"
+              class="text-coffee-dark hover:text-coffee-accent text-lg font-medium transition-colors"
+              >Inicio</a
+            >
+            <a
+              href="#"
+              class="text-coffee-dark hover:text-coffee-accent text-lg font-medium transition-colors"
+              >Menú</a
+            >
+            <a
+              href="#"
+              class="text-coffee-dark hover:text-coffee-accent text-lg font-medium transition-colors"
+              >Sucursales</a
+            >
+            <a
+              href="#"
+              class="text-coffee-dark hover:text-coffee-accent text-lg font-medium transition-colors"
+              >Nosotros</a
             >
           </div>
 
@@ -68,29 +130,79 @@
           <div class="flex items-center">
             <!-- Botones desktop -->
             <div class="hidden md:flex items-center gap-6">
-              <!-- Eliminado h-screen y justify-center -->
+              <!-- Botón de Pedido -->
               <a
-                class="text-amber-900 hover:text-amber-600 cursor-pointer text-lg font-medium transition-colors"
+                class="flex items-center gap-2 text-coffee-dark hover:text-coffee-accent cursor-pointer text-lg font-medium transition-colors"
               >
-                Menú
+                <i class="fas fa-shopping-cart"></i>
+                <span>Pedido</span>
               </a>
-              <a
-                class="text-amber-900 hover:text-amber-600 cursor-pointer text-lg font-medium transition-colors"
-              >
-                Pedido
-              </a>
-              <a
-                href="{% url 'login' %}"
-                class="text-white hover:bg-amber-800 cursor-pointer text-lg font-medium transition-colors bg-amber-700 px-4 py-2 rounded-lg"
-              >
-                Login
-              </a>
+
+              <!-- Gestión de usuario -->
+              <div class="relative">
+                {% if user.is_authenticated %}
+                <!-- Usuario autenticado - Menú desplegable -->
+                <div class="user-dropdown flex items-center cursor-pointer">
+                  <div
+                    class="w-10 h-10 rounded-full bg-coffee-accent flex items-center justify-center text-white font-bold"
+                  >
+                    {{ user.username|slice:":1"|upper }}
+                  </div>
+                  <span class="ml-2 text-coffee-dark text-lg"
+                    >{{ user.username }}</span
+                  >
+                  <i
+                    class="fas fa-chevron-down ml-2 text-sm text-coffee-medium"
+                  ></i>
+                </div>
+
+                <!-- Menú desplegable -->
+                <div
+                  class="dropdown-content hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20"
+                >
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-coffee-dark hover:bg-coffee-cream"
+                  >
+                    <i class="fas fa-user-circle mr-2"></i> Mi Cuenta
+                  </a>
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-coffee-dark hover:bg-coffee-cream"
+                  >
+                    <i class="fas fa-history mr-2"></i> Mis Pedidos
+                  </a>
+                  <form
+                    action="{% url 'logout' %}"
+                    method="post"
+                    class="border-t border-gray-200 mt-1"
+                  >
+                    {% csrf_token %}
+                    <button
+                      type="submit"
+                      class="block w-full text-left px-4 py-2 text-coffee-dark hover:bg-coffee-cream hover:text-red-600"
+                    >
+                      <i class="fas fa-sign-out-alt mr-2"></i> Cerrar sesión
+                    </button>
+                  </form>
+                </div>
+                {% else %}
+                <!-- Usuario no autenticado -->
+                <a
+                  href="{% url 'login' %}"
+                  class="flex items-center gap-2 text-white hover:bg-coffee-medium cursor-pointer text-lg font-medium transition-colors bg-coffee-dark px-4 py-2 rounded-full"
+                >
+                  <i class="fas fa-user-circle"></i>
+                  Iniciar Sesión
+                </a>
+                {% endif %}
+              </div>
             </div>
 
             <!-- Botón móvil -->
             <button
               id="toggleMenu"
-              class="md:hidden p-3 space-y-2 cursor-pointer hover:bg-amber-100 rounded-lg transition-colors"
+              class="md:hidden p-3 space-y-2 cursor-pointer hover:bg-coffee-cream rounded-lg transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -102,7 +214,7 @@
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="lucide lucide-menu-icon lucide-menu w-8 h-8"
+                class="lucide lucide-menu-icon lucide-menu w-8 h-8 text-coffee-dark"
               >
                 <path d="M4 12h16" />
                 <path d="M4 18h16" />
@@ -115,53 +227,252 @@
         <!-- Menú Móvil -->
         <div class="menu-movil md:hidden pb-6 space-y-4">
           <a
-            class="w-full text-left px-4 py-3 text-amber-900 text-lg hover:bg-amber-100 rounded-lg transition-colors"
+            href="#"
+            class="w-full text-left px-4 py-3 text-coffee-dark text-lg hover:bg-coffee-cream rounded-lg transition-colors"
+            >Inicio</a
           >
-            Menú
-          </a>
           <a
-            class="w-full text-left px-4 py-3 text-amber-900 text-lg hover:bg-amber-100 rounded-lg transition-colors"
+            href="#"
+            class="w-full text-left px-4 py-3 text-coffee-dark text-lg hover:bg-coffee-cream rounded-lg transition-colors"
+            >Menú</a
           >
-            Pedido
-          </a>
           <a
-            href="{% url 'login' %}"
-            class="w-full text-left px-4 py-3 text-amber-900 text-lg hover:bg-amber-100 rounded-lg transition-colors"
+            href="#"
+            class="w-full text-left px-4 py-3 text-coffee-dark text-lg hover:bg-coffee-cream rounded-lg transition-colors"
+            >Sucursales</a
           >
-            Login
+          <a
+            href="#"
+            class="w-full text-left px-4 py-3 text-coffee-dark text-lg hover:bg-coffee-cream rounded-lg transition-colors"
+            >Nosotros</a
+          >
+          <a
+            href="#"
+            class="w-full text-left px-4 py-3 text-coffee-dark text-lg hover:bg-coffee-cream rounded-lg transition-colors flex items-center gap-2"
+          >
+            <i class="fas fa-shopping-cart"></i>
+            <span>Pedido</span>
           </a>
+
+          <div class="pt-4 border-t border-coffee-light">
+            {% if user.is_authenticated %}
+            <div class="flex items-center px-4 py-3">
+              <div
+                class="w-8 h-8 rounded-full bg-coffee-accent flex items-center justify-center text-white font-bold mr-3"
+              >
+                {{ user.username|slice:":1"|upper }}
+              </div>
+              <span class="text-coffee-dark">{{ user.username }}</span>
+            </div>
+            <a
+              href="#"
+              class="w-full text-left px-4 py-3 text-coffee-dark text-lg hover:bg-coffee-cream rounded-lg transition-colors flex items-center gap-2"
+            >
+              <i class="fas fa-user-circle"></i>
+              <span>Mi Cuenta</span>
+            </a>
+            <a
+              href="#"
+              class="w-full text-left px-4 py-3 text-coffee-dark text-lg hover:bg-coffee-cream rounded-lg transition-colors flex items-center gap-2"
+            >
+              <i class="fas fa-history"></i>
+              <span>Mis Pedidos</span>
+            </a>
+            <form action="{% url 'logout' %}" method="post">
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="w-full text-left px-4 py-3 text-coffee-dark text-lg hover:bg-coffee-cream rounded-lg transition-colors flex items-center gap-2 hover:text-red-600"
+              >
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Cerrar sesión</span>
+              </button>
+            </form>
+            {% else %}
+            <a
+              href="{% url 'login' %}"
+              class="w-full text-left px-4 py-3 text-white bg-coffee-dark hover:bg-coffee-medium rounded-lg transition-colors flex items-center gap-2"
+            >
+              <i class="fas fa-user-circle"></i>
+              <span>Iniciar Sesión</span>
+            </a>
+            {% endif %}
+          </div>
         </div>
       </nav>
     </header>
 
     <!-- Contenido principal -->
-    <main class="min-h-screen bg-amber-50">
+    <main class="min-h-screen">
       {% if request.resolver_match.url_name != 'login' %}
-
       <section class="container mx-auto px-4 py-20">
         <div class="max-w-4xl mx-auto text-center">
-          <h1 class="text-5xl md:text-6xl font-bold text-amber-900 mb-6">
+          <h1 class="text-5xl md:text-6xl font-bold text-coffee-dark mb-6">
             Café de Especialidad
           </h1>
-          <p class="text-xl text-amber-800 mb-8">
+          <p class="text-xl text-coffee-medium mb-8">
             Experimenta la auténtica tradición cafetalera con nuestros granos
-            premium tostados prefecto para ti
+            premium tostados perfecto para ti
           </p>
           <button
-            class="bg-amber-700 text-white px-8 py-3 rounded-lg hover:bg-amber-800 transition-colors text-lg"
+            class="bg-coffee-accent text-coffee-dark px-8 py-3 rounded-lg hover:bg-amber-600 transition-colors text-lg font-medium"
           >
             Ver Nuestra Carta
           </button>
         </div>
       </section>
+      {% endif %} {% block content %}
+      <!-- Contenido específico de cada página -->
+      <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div class="bg-white p-8 rounded-lg shadow-lg text-center">
+            <div
+              class="w-20 h-20 bg-coffee-cream rounded-full flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-coffee text-3xl text-coffee-accent"></i>
+            </div>
+            <h3 class="text-xl font-bold text-coffee-dark mb-3">
+              Granos Seleccionados
+            </h3>
+            <p class="text-coffee-medium">
+              Nuestros granos son cuidadosamente seleccionados de las mejores
+              fincas cafetaleras del mundo.
+            </p>
+          </div>
 
-      {% endif %} {% block content %} {% endblock %}
+          <div class="bg-white p-8 rounded-lg shadow-lg text-center">
+            <div
+              class="w-20 h-20 bg-coffee-cream rounded-full flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-fire text-3xl text-coffee-accent"></i>
+            </div>
+            <h3 class="text-xl font-bold text-coffee-dark mb-3">
+              Tostado Artesanal
+            </h3>
+            <p class="text-coffee-medium">
+              Tostamos cada lote a la perfección para resaltar los sabores
+              únicos de cada origen.
+            </p>
+          </div>
+
+          <div class="bg-white p-8 rounded-lg shadow-lg text-center">
+            <div
+              class="w-20 h-20 bg-coffee-cream rounded-full flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-mug-hot text-3xl text-coffee-accent"></i>
+            </div>
+            <h3 class="text-xl font-bold text-coffee-dark mb-3">
+              Preparación Experta
+            </h3>
+            <p class="text-coffee-medium">
+              Nuestros baristas preparan cada taza con precisión y pasión por el
+              café de calidad.
+            </p>
+          </div>
+        </div>
+      </div>
+      {% endblock %}
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-coffee-dark text-coffee-cream py-12">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <div class="flex items-center mb-4">
+              <i class="fas fa-mug-hot text-coffee-accent text-2xl mr-3"></i>
+              <span class="font-bold text-xl text-white">Coffee Shop</span>
+            </div>
+            <p class="mb-4">El mejor café, siempre a tu disposición</p>
+            <div class="flex space-x-4">
+              <a href="#" class="text-coffee-cream hover:text-coffee-accent">
+                <i class="fab fa-facebook text-xl"></i>
+              </a>
+              <a href="#" class="text-coffee-cream hover:text-coffee-accent">
+                <i class="fab fa-instagram text-xl"></i>
+              </a>
+              <a href="#" class="text-coffee-cream hover:text-coffee-accent">
+                <i class="fab fa-twitter text-xl"></i>
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-bold text-white mb-4">Enlaces</h4>
+            <ul class="space-y-2">
+              <li>
+                <a href="#" class="hover:text-coffee-accent transition-colors"
+                  >Inicio</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-coffee-accent transition-colors"
+                  >Menú</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-coffee-accent transition-colors"
+                  >Sucursales</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-coffee-accent transition-colors"
+                  >Nosotros</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-bold text-white mb-4">Horarios</h4>
+            <ul class="space-y-2">
+              <li>Lunes a Viernes: 7am - 10pm</li>
+              <li>Sábados: 8am - 11pm</li>
+              <li>Domingos: 8am - 8pm</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-bold text-white mb-4">Contacto</h4>
+            <ul class="space-y-2">
+              <li class="flex items-start">
+                <i
+                  class="fas fa-map-marker-alt mt-1 mr-3 text-coffee-accent"
+                ></i>
+                <span>Av. Principal 123, Ciudad</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-phone mt-1 mr-3 text-coffee-accent"></i>
+                <span>(123) 456-7890</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-envelope mt-1 mr-3 text-coffee-accent"></i>
+                <span>info@coffeeshop.com</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-coffee-light mt-8 pt-6 text-center text-sm">
+          &copy; 2023 Coffee Shop. Todos los derechos reservados.
+        </div>
+      </div>
+    </footer>
 
     <script>
       const toggleMenu = document.getElementById("toggleMenu");
       toggleMenu.addEventListener("click", () => {
         document.body.classList.toggle("menu-abierto");
+      });
+
+      // Cerrar menú móvil al hacer clic en un enlace
+      const mobileLinks = document.querySelectorAll(
+        ".menu-movil a, .menu-movil button"
+      );
+      mobileLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          document.body.classList.remove("menu-abierto");
+        });
       });
     </script>
   </body>
