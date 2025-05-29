@@ -132,6 +132,7 @@
             <div class="hidden md:flex items-center gap-6">
               <!-- Botón de Pedido -->
               <a
+                href="{% url 'orders' %}"
                 class="flex items-center gap-2 text-coffee-dark hover:text-coffee-accent cursor-pointer text-lg font-medium transition-colors"
               >
                 <i class="fas fa-shopping-cart"></i>
@@ -308,7 +309,7 @@
 
     <!-- Contenido principal -->
     <main class="min-h-screen">
-      {% if request.resolver_match.url_name != 'login' %}
+      {% if request.resolver_match.url_name not in 'login orders' %}
       <section class="container mx-auto px-4 py-20">
         <div class="max-w-4xl mx-auto text-center">
           <h1 class="text-5xl md:text-6xl font-bold text-coffee-dark mb-6">

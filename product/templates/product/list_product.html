@@ -55,7 +55,7 @@
             </p>
           </div>
 
-          <!-- Disponibilidad -->
+          <!-- Disponibilidad y pedidos-->
           <div class="flex justify-between items-center">
             {% if product.available %}
             <span
@@ -70,6 +70,12 @@
               Agotado
             </span>
             {% endif %}
+
+            <button
+              class="bg-coffee-dark hover:bg-coffee-medium text-white text-sm font-medium px-3 py-1 rounded-full"
+            >
+              pedir
+            </button>
           </div>
         </div>
       </li>
