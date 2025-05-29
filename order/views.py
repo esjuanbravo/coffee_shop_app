@@ -11,3 +11,12 @@ class MyOrder(LoginRequiredMixin, DetailView):
     
     def get_object(self, queryset = None):
         return Order.objects.filter(is_active=True, user = self.request.user).first()
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        order = self.get_object()
+        
+        total = sum(order_product.product.price * order_product.quantity for order_product in order.orderproduct_set.all())
+        
+        context['total'] = total
+        return context
