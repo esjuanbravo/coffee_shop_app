@@ -13,36 +13,41 @@ from .models import Products, Category
 #         context = super().get_context_data(**kwargs)
 #         context['product_form'] = ProductsForms()
 #         return context
-    
+
 #     def post(self, request,):
 #         product_form = ProductsForms(request.POST, request.FILES)
-        
+
 #         if 'product_submit' in request.POST and product_form.is_valid():
 #             product_form.save()
 #             return redirect('all_products')
-        
-        
-        
+
+
 #         return self.render_to_response({
 #             'product_form': product_form,
 #         })
-    
+
 # class ProductListView(generic.ListView):
 #     model = Products
 #     template_name='product/list_product.html'
-#     context_object_name = 'products' 
-    
+#     context_object_name = 'products'
+
 #     def get_queryset(self):
 #         # Ordenamos por categoría y luego por nombre
 #         return Products.objects.select_related('category').order_by('category__name', 'name')
-    
+
+
 class ProductListView(generic.ListView):
     model = Category  # Cambiamos el modelo a Category
-    template_name = 'product/list_product.html'
-    context_object_name = 'categories'  # Cambiamos el contexto a categorías
-    
+    template_name = "product/list_product.html"
+    context_object_name = "categories"  # Cambiamos el contexto a categorías
+
     def get_queryset(self):
         # Obtenemos categorías con sus productos relacionados y filtramos solo las con productos
-        return Category.objects.prefetch_related(
-            'products_set'  # Nombre de la relación inversa (products_set por defecto)
-        ).filter(products__isnull=False).distinct().order_by('name')
+        return (
+            Category.objects.prefetch_related(
+                "products_set"  # Nombre de la relación inversa (products_set por defecto)
+            )
+            .filter(products__isnull=False)
+            .distinct()
+            .order_by("name")
+        )

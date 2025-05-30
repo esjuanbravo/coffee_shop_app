@@ -9,14 +9,13 @@ from .models import Category, Products
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['id','name']
-    search_fields = ['name']
-    ordering=['id']
+    list_display = ["id", "name"]
+    search_fields = ["name"]
+    ordering = ["id"]
 
 
 @admin.register(Products)
 class ProductAdmin(admin.ModelAdmin):
-    list_display=['id', 'name','category', 'price','create', 'available']
-    search_fields= ['name', 'create']
-    ordering=['id']
- 
+    list_display = ["id", "name", "category", "price", "create", "available"]
+    search_fields = ["name", "create"]
+    ordering = ["id"]

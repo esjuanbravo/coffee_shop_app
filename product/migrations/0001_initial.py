@@ -9,27 +9,84 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, verbose_name='nombre de la categoria')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        max_length=50, verbose_name="nombre de la categoria"
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Products',
+            name="Products",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, verbose_name='nombre de la categoria')),
-                ('description', models.CharField(max_length=150, verbose_name='description')),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10, verbose_name='precios')),
-                ('imagen', models.ImageField(blank=True, null=True, upload_to='products/', validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'webp'], message='Solo se permiten imágenes JPG, PNG o WEBP')])),
-                ('available', models.BooleanField(default=True, verbose_name='Disponibilidad')),
-                ('category', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='product.category', verbose_name='categoria')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        max_length=50, verbose_name="nombre de la categoria"
+                    ),
+                ),
+                (
+                    "description",
+                    models.CharField(max_length=150, verbose_name="description"),
+                ),
+                (
+                    "price",
+                    models.DecimalField(
+                        decimal_places=2, max_digits=10, verbose_name="precios"
+                    ),
+                ),
+                (
+                    "imagen",
+                    models.ImageField(
+                        blank=True,
+                        null=True,
+                        upload_to="products/",
+                        validators=[
+                            django.core.validators.FileExtensionValidator(
+                                allowed_extensions=["jpg", "jpeg", "png", "webp"],
+                                message="Solo se permiten imágenes JPG, PNG o WEBP",
+                            )
+                        ],
+                    ),
+                ),
+                (
+                    "available",
+                    models.BooleanField(default=True, verbose_name="Disponibilidad"),
+                ),
+                (
+                    "category",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="product.category",
+                        verbose_name="categoria",
+                    ),
+                ),
             ],
         ),
     ]
