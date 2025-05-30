@@ -70,12 +70,15 @@
               Agotado
             </span>
             {% endif %}
-
-            <button
-              class="bg-coffee-dark hover:bg-coffee-medium text-white text-sm font-medium px-3 py-1 rounded-full"
-            >
-              pedir
-            </button>
+            <form action="{% url 'add_product' %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="product" value="{{product.id}}" />
+              <button
+                class="bg-coffee-dark hover:bg-coffee-medium text-white text-sm font-medium px-3 py-1 rounded-full"
+              >
+                pedir
+              </button>
+            </form>
           </div>
         </div>
       </li>
